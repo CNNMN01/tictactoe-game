@@ -28,161 +28,444 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #48bb78;
+            --danger: #f56565;
+            --warning: #ed8936;
+            --light-bg: #f7fafc;
+            --dark-text: #2d3748;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.15);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background circles */
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        body::before {
+            width: 400px;
+            height: 400px;
+            background: white;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        body::after {
+            width: 300px;
+            height: 300px;
+            background: white;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 7s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
         }
 
         /* Ad container styles */
         .ad-container {
             background: white;
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 15px;
+            padding: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
             max-width: 728px;
             width: 100%;
             min-height: 90px;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .container {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            max-width: 550px;
             width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
             text-align: center;
-            color: #667eea;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 2.8em;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 0.95em;
             margin-bottom: 30px;
-            font-size: 2.5em;
+        }
+
+        /* Score Board */
+        .scoreboard {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: var(--light-bg);
+            border-radius: 16px;
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s;
+        }
+
+        .score-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .score-label {
+            font-size: 0.85em;
+            color: #718096;
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-item.player-x .score-value {
+            background: linear-gradient(135deg, #667eea, #4299e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-item.player-o .score-value {
+            background: linear-gradient(135deg, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #cbd5e0;
         }
 
         .mode-selection {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: var(--light-bg);
+            padding: 6px;
+            border-radius: 14px;
         }
 
         .mode-btn {
             flex: 1;
-            padding: 15px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: #718096;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
         }
 
         .mode-btn:hover {
-            background: #667eea;
-            color: white;
+            transform: translateY(-1px);
         }
 
         .mode-btn.active {
-            background: #667eea;
             color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mode-btn.active::before {
+            opacity: 1;
         }
 
         .game-info {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            font-size: 1.3em;
+            color: var(--dark-text);
+            font-weight: 600;
+            min-height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .game-info .emoji {
             font-size: 1.2em;
-            color: #333;
-            min-height: 30px;
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 30px;
+            padding: 8px;
+            background: var(--light-bg);
+            border-radius: 18px;
         }
 
         .cell {
             aspect-ratio: 1;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 10px;
-            font-size: 3em;
-            font-weight: bold;
+            background: white;
+            border: 3px solid transparent;
+            border-radius: 14px;
+            font-size: 3.5em;
+            font-weight: 900;
             cursor: pointer;
-            transition: all 0.3s;
-            color: #667eea;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
         .cell:hover:not(:disabled) {
-            background: #e0e0e0;
+            border-color: var(--primary);
             transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .cell:hover:not(:disabled)::before {
+            opacity: 0.05;
         }
 
         .cell:disabled {
             cursor: not-allowed;
         }
 
+        .cell:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
         .cell.x {
             color: #667eea;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .cell.o {
             color: #764ba2;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .cell.winning {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white !important;
+            animation: winPulse 0.6s ease-in-out;
+            border-color: #48bb78;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes winPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+            }
         }
 
         .controls {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .btn {
             flex: 1;
-            padding: 15px;
+            padding: 16px 24px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: #667eea;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--light-bg);
+            color: var(--dark-text);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
         }
 
         .footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--light-bg);
             font-size: 0.9em;
-            color: #666;
+            color: #718096;
         }
 
         .footer a {
-            color: #667eea;
+            color: var(--primary);
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 12px;
+            font-weight: 600;
+            transition: all 0.2s;
         }
 
         .footer a:hover {
+            color: var(--secondary);
             text-decoration: underline;
         }
 
@@ -193,7 +476,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             overflow-y: auto;
         }
@@ -203,45 +487,81 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 40px;
             max-width: 800px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-close {
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 30px;
+            font-size: 32px;
             cursor: pointer;
-            color: #666;
-            background: none;
+            color: #a0aec0;
+            background: var(--light-bg);
             border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: var(--dark-text);
+            transform: rotate(90deg);
         }
 
         .modal-content h2 {
-            color: #667eea;
+            color: var(--primary);
             margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: 800;
         }
 
         .modal-content h3 {
-            color: #764ba2;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            color: var(--secondary);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+            font-weight: 700;
         }
 
         .modal-content p, .modal-content ul {
             margin-bottom: 15px;
-            line-height: 1.6;
-            color: #333;
+            line-height: 1.8;
+            color: #4a5568;
         }
 
         .modal-content ul {
@@ -249,37 +569,82 @@
         }
 
         .modal-content li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .modal-content a {
-            color: #667eea;
+            color: var(--primary);
             text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .modal-content a:hover {
+            color: var(--secondary);
+        }
+
+        /* Confetti animation for wins */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         @media (max-width: 600px) {
             .container {
-                padding: 20px;
+                padding: 24px;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 2.2em;
             }
 
             .cell {
-                font-size: 2em;
+                font-size: 2.5em;
+            }
+
+            .scoreboard {
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .score-value {
+                font-size: 1.6em;
             }
 
             .ad-container {
                 min-height: 50px;
             }
+
+            .game-info {
+                font-size: 1.1em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <!-- Top Ad Banner -->
     <div class="ad-container">
-        <!-- Ad Unit: Replace with your actual ad unit code -->
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-3532651292710019"
@@ -293,13 +658,29 @@
 
     <div class="container">
         <h1>Tic Tac Toe</h1>
+        <p class="subtitle">Challenge a friend or test your skills against AI</p>
         
-        <div class="mode-selection">
-            <button class="mode-btn active" onclick="setMode('two-player')">Two Player</button>
-            <button class="mode-btn" onclick="setMode('bot')">vs Bot</button>
+        <!-- Scoreboard -->
+        <div class="scoreboard">
+            <div class="score-item player-x">
+                <div class="score-label">Player X</div>
+                <div class="score-value" id="scoreX">0</div>
+            </div>
+            <div class="score-divider">:</div>
+            <div class="score-item player-o">
+                <div class="score-label" id="playerOLabel">Player O</div>
+                <div class="score-value" id="scoreO">0</div>
+            </div>
         </div>
 
-        <div class="game-info" id="gameInfo">Player X's Turn</div>
+        <div class="mode-selection">
+            <button class="mode-btn active" onclick="setMode('two-player')">👥 Two Player</button>
+            <button class="mode-btn" onclick="setMode('bot')">🤖 vs Bot</button>
+        </div>
+
+        <div class="game-info" id="gameInfo">
+            <span>Player X's Turn</span>
+        </div>
 
         <div class="board" id="board">
             <button class="cell" onclick="makeMove(0)"></button>
@@ -314,7 +695,8 @@
         </div>
 
         <div class="controls">
-            <button class="btn btn-primary" onclick="resetGame()">New Game</button>
+            <button class="btn btn-primary" onclick="resetGame()">🔄 New Game</button>
+            <button class="btn btn-secondary" onclick="resetScores()">📊 Reset Scores</button>
         </div>
 
         <div class="footer">
@@ -457,6 +839,8 @@
         let currentPlayer = 'X';
         let gameMode = 'two-player';
         let gameActive = true;
+        let scores = { X: 0, O: 0 };
+        let winningCells = [];
 
         const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -464,11 +848,32 @@
             [0, 4, 8], [2, 4, 6]
         ];
 
-        // Sanitize text to prevent XSS
-        function sanitizeText(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        // Load scores from localStorage
+        function loadScores() {
+            const savedScores = localStorage.getItem('tictactoe_scores');
+            if (savedScores) {
+                scores = JSON.parse(savedScores);
+                updateScoreDisplay();
+            }
+        }
+
+        // Save scores to localStorage
+        function saveScores() {
+            localStorage.setItem('tictactoe_scores', JSON.stringify(scores));
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            document.getElementById('scoreX').textContent = scores.X;
+            document.getElementById('scoreO').textContent = scores.O;
+        }
+
+        // Reset scores
+        function resetScores() {
+            scores = { X: 0, O: 0 };
+            saveScores();
+            updateScoreDisplay();
+            showNotification('Scores reset! 🔄');
         }
 
         function setMode(mode) {
@@ -477,6 +882,11 @@
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
+            
+            // Update Player O label
+            const playerOLabel = document.getElementById('playerOLabel');
+            playerOLabel.textContent = mode === 'bot' ? 'Bot' : 'Player O';
+            
             resetGame();
         }
 
@@ -486,14 +896,23 @@
             board[index] = currentPlayer;
             updateBoard();
 
-            if (checkWin()) {
-                document.getElementById('gameInfo').textContent = `Player ${currentPlayer} Wins! 🎉`;
+            const winPattern = checkWin();
+            if (winPattern) {
+                winningCells = winPattern;
+                highlightWinningCells();
+                const infoElement = document.getElementById('gameInfo');
+                infoElement.innerHTML = `<span class="emoji">🎉</span> Player ${currentPlayer} Wins!`;
+                scores[currentPlayer]++;
+                saveScores();
+                updateScoreDisplay();
+                createConfetti();
                 gameActive = false;
                 return;
             }
 
             if (checkDraw()) {
-                document.getElementById('gameInfo').textContent = "It's a Draw! 🤝";
+                const infoElement = document.getElementById('gameInfo');
+                infoElement.innerHTML = `<span class="emoji">🤝</span> It's a Draw!`;
                 gameActive = false;
                 return;
             }
@@ -516,7 +935,14 @@
                 board[move] = 'O';
                 if (checkWin()) {
                     updateBoard();
-                    document.getElementById('gameInfo').textContent = "Bot Wins! 🤖";
+                    const winPattern = checkWin();
+                    winningCells = winPattern;
+                    highlightWinningCells();
+                    const infoElement = document.getElementById('gameInfo');
+                    infoElement.innerHTML = `<span class="emoji">🤖</span> Bot Wins!`;
+                    scores.O++;
+                    saveScores();
+                    updateScoreDisplay();
                     gameActive = false;
                     return;
                 }
@@ -530,7 +956,8 @@
                     board[move] = 'O';
                     updateBoard();
                     if (checkDraw()) {
-                        document.getElementById('gameInfo').textContent = "It's a Draw! 🤝";
+                        const infoElement = document.getElementById('gameInfo');
+                        infoElement.innerHTML = `<span class="emoji">🤝</span> It's a Draw!`;
                         gameActive = false;
                     } else {
                         currentPlayer = 'X';
@@ -560,13 +987,23 @@
         }
 
         function checkWin() {
-            return winPatterns.some(pattern => {
-                return pattern.every(index => board[index] === currentPlayer && board[index] !== '');
-            });
+            for (let pattern of winPatterns) {
+                if (pattern.every(index => board[index] === currentPlayer && board[index] !== '')) {
+                    return pattern;
+                }
+            }
+            return null;
         }
 
         function checkDraw() {
             return board.every(cell => cell !== '');
+        }
+
+        function highlightWinningCells() {
+            winningCells.forEach(index => {
+                const cells = document.querySelectorAll('.cell');
+                cells[index].classList.add('winning');
+            });
         }
 
         function updateBoard() {
@@ -584,9 +1021,9 @@
             const infoElement = document.getElementById('gameInfo');
             if (gameActive) {
                 if (gameMode === 'two-player') {
-                    infoElement.textContent = `Player ${currentPlayer}'s Turn`;
+                    infoElement.innerHTML = `<span>Player ${currentPlayer}'s Turn</span>`;
                 } else {
-                    infoElement.textContent = currentPlayer === 'X' ? "Your Turn" : "Bot's Turn";
+                    infoElement.innerHTML = currentPlayer === 'X' ? "<span>Your Turn</span>" : "<span>🤖 Bot's Turn...</span>";
                 }
             }
         }
@@ -595,8 +1032,43 @@
             board = ['', '', '', '', '', '', '', '', ''];
             currentPlayer = 'X';
             gameActive = true;
+            winningCells = [];
             updateBoard();
             updateGameInfo();
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#48bb78', '#ed8936', '#f56565'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 15px 25px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
         }
 
         function openModal(event, type) {
@@ -624,6 +1096,7 @@
         }
 
         // Initialize game
+        loadScores();
         updateBoard();
         updateGameInfo();
     </script>
