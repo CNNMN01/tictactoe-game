@@ -1,0 +1,3 @@
+cat > ads.txt << 'EOF'
+google.com, pub-3532651292710019, DIRECT, f08c47fec0942fa0
+EOF
